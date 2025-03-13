@@ -48,7 +48,9 @@ export const HeliaProvider = ({ children }) => {
               bootstrap({
                 list: [
                   '/dnsaddr/bootstrap.libp2p.io/p2p/QmSomeBootstrapPeerId',
-                  '/dnsaddr/bootstrap.libp2p.io/p2p/QmAnotherBootstrapPeerId'
+                  '/dnsaddr/bootstrap.libp2p.io/p2p/QmAnotherBootstrapPeerId',
+                  '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+                  '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/'
                 ]
               })
             ],
@@ -62,6 +64,7 @@ export const HeliaProvider = ({ children }) => {
         setFs(unixfs(helia))
         setStarting(false)
         console.log("Helia started with services: ", helia.libp2p.services)
+        console.log('Active transports:', helia.libp2p.transportManager.getTransports());
       } catch (e) {
         console.error(e)
         setError(true)
