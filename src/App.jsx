@@ -1,11 +1,14 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import './App.css'
 import { useCommitText } from '@/hooks/useCommitText'
 import { useHelia } from '@/hooks/useHelia'
+import { usePubSub } from './hooks/usePubSub'
 
 function App() {
+
   const [text, setText] = useState('')
   const [cid, setCid] = useState('')
+  const { sendCID, messages } = usePubSub()
   const { error, starting } = useHelia()
   const {
     cidString,
@@ -13,6 +16,14 @@ function App() {
     fetchCommittedText,
     committedText
   } = useCommitText()
+
+  const addText = async (text) => {
+    await commitText(text);
+    if (cidString) {
+      console.log(cidString)
+      sendCID(cidString);
+    }
+  };
 
   return (
     <div className="App">
@@ -33,7 +44,7 @@ function App() {
         type="text" />
       <button
         id="commitTextButton"
-        onClick={() => commitText(text)}
+        onClick={() => addText(text)}
       >Add Text To Node</button>
       <div
         id="cidOutput"

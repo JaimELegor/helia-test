@@ -5,7 +5,9 @@ import { createHelia } from 'helia'
 import { bootstrap } from '@libp2p/bootstrap'
 import { webSockets } from '@libp2p/websockets'
 import { webRTC } from '@libp2p/webrtc'
+import { gossipsub } from '@chainsafe/libp2p-gossipsub'
 import { circuitRelayTransport } from '@libp2p/circuit-relay-v2'
+import { identify } from '@libp2p/identify'
 import PropTypes from 'prop-types'
 import {
   React,
@@ -49,12 +51,17 @@ export const HeliaProvider = ({ children }) => {
                   '/dnsaddr/bootstrap.libp2p.io/p2p/QmAnotherBootstrapPeerId'
                 ]
               })
-            ]
-          }
+            ],
+            services: {
+              identify: identify(),
+              pubsub: gossipsub(),
+            },
+          },
         })
         setHelia(helia)
         setFs(unixfs(helia))
         setStarting(false)
+        console.log("Helia started with services: ", helia.libp2p.services)
       } catch (e) {
         console.error(e)
         setError(true)

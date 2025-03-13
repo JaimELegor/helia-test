@@ -13,7 +13,9 @@
     "test": "npm run build && test-browser-example test"
   },
   "dependencies": {
+    "@chainsafe/libp2p-gossipsub": "^14.1.0",
     "@helia/unixfs": "^4.0.0",
+    "@libp2p/pubsub": "^10.1.7",
     "helia": "^5.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
