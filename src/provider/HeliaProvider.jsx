@@ -64,7 +64,6 @@ export const HeliaProvider = ({ children }) => {
         setFs(unixfs(helia))
         setStarting(false)
         console.log("Helia started with services: ", helia.libp2p.services)
-        console.log('Active transports:', helia.libp2p.transportManager.getTransports());
       } catch (e) {
         console.error(e)
         setError(true)
