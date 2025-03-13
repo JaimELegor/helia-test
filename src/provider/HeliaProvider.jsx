@@ -2,6 +2,10 @@
 
 import { unixfs } from '@helia/unixfs'
 import { createHelia } from 'helia'
+import { bootstrap } from '@libp2p/bootstrap'
+import { webSockets } from '@libp2p/websockets'
+import { webRTC } from '@libp2p/webrtc'
+import { circuitRelayTransport } from '@libp2p/circuit-relay-v2'
 import PropTypes from 'prop-types'
 import {
   React,
@@ -35,7 +39,19 @@ export const HeliaProvider = ({ children }) => {
     } else {
       try {
         console.info('Starting Helia')
-        const helia = await createHelia()
+        const helia = await createHelia({
+          libp2p: {
+            transports: [webSockets(), webRTC(), circuitRelayTransport()],
+            peerDiscovery: [
+              bootstrap({
+                list: [
+                  '/dnsaddr/bootstrap.libp2p.io/p2p/QmSomeBootstrapPeerId',
+                  '/dnsaddr/bootstrap.libp2p.io/p2p/QmAnotherBootstrapPeerId'
+                ]
+              })
+            ]
+          }
+        })
         setHelia(helia)
         setFs(unixfs(helia))
         setStarting(false)
